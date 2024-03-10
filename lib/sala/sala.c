@@ -4,7 +4,7 @@
 #include <stdlib.h> //para exit
 #include <getopt.h> //para getopt
 #include <string.h> //para strlen
-
+#include <stdbool.h>
 
 /*Variables globales*/
 
@@ -22,9 +22,21 @@ int asientos_lib;
 //Controlar si la sala no se ha creado
 //Funciones internas (No declarar en sala.h) 
 //Comentar sala.h
-
+bool estado_sala(){
+	if(ptr != NULL){
+		return true;
+	}else if(ptr == NULL){
+		return false;
+	}
+}
 
 int crea_sala(int capacidad){
+	
+	//Coprobamos que existe
+	if(estado_sala()){
+		return -1;
+	}
+	
 	
 	//Controlamos que el parámetro capacidad sea mayor que 0 para poder crear la sala
 	if (capacidad > 0){
@@ -33,7 +45,7 @@ int crea_sala(int capacidad){
 	     ptr = (int*)malloc(capacidad*sizeof(int));
 	     if(ptr != NULL){
 	         capacidad_main = capacidad;
-	         asientos_lib = capacidad;
+
 	         asientos_ocu=0;
 	         for (int i = 0; i<capacidad;i++){
 		     *(ptr+i) = -1;
@@ -56,10 +68,12 @@ int crea_sala(int capacidad){
 int elimina_sala(){
 	
 	//Si el puntero es NULL, no hay espacio de memoria que liberar
-	if (ptr == NULL){
+	//Problema si se elimina dos veces peta //////////////////////////////////////////////////////////////////
+	if (!estado_sala()){
 	     return -1;
 	}else{
 	     free(ptr);
+	     ptr = NULL; 
 	     return 0;
 	}
 	
@@ -67,74 +81,30 @@ int elimina_sala(){
 
 
 int capacidad_sala(){
+	if(!estado_sala()){
+		return -1;
+	}
 	return capacidad_main;
 }
 
 int asientos_libres(){
-	return asientos_lib;
+	if(!estado_sala()){
+		return -1;
+	}
+	return capacidad_main - asientos_ocu;
 }
 
 int asientos_ocupados(){
+	if(!estado_sala()){
+		return -1;
+	}
 	return asientos_ocu;
 }
 
-
-int reserva_asiento(int id_persona){
-	
-	//Controlamos que hay asientos libres
-	if (asientos_ocu != capacidad_main){
-	
-		//Control de que id es positivo
-		if(id_persona < 0){printf("Introduzca un id válido");return -1;}
-		
-		//**** SOBRA
-		//Control de que id no está repetido
-	         for (int i = 0; i < capacidad_main;i++){
-	              if (*(ptr+i) == id_persona) {printf("Id repetido, pruebe introduciendo otro");return -1;}
-	         }	         	    	 
-	         	         
-	         //Recorremos los asientos y reservamos el primero que esté libre
-	         for (int i = 0; i < capacidad_main;i++){
-	              if (*(ptr+i) == -1) {
-	                  *(ptr+i) = id_persona;
-	                  asientos_lib--;
-           	         asientos_ocu++;
-	                  return i+1;
-	              }
-	         }
-	         	         
-	}else{
-		printf("Error, no hay asientos libres");
-		return -1;
-	}
-}
-
-int libera_asiento(int id_asiento){
-	
-	//*******
-	//Si el asiento está fuera del rango de la sala (1--capacidad), da error
-	if (id_asiento <= capacidad_main && id_asiento > 0){
-		
-		//Si el asiento ya estaba libre, da error
-		if (*(ptr+id_asiento-1) == -1){
-			printf("Error, no puede liberar un asiento que está libre");
-			return -1;
-		}else{	
-			int id_del_asiento = *(ptr+id_asiento-1);
-			*(ptr+id_asiento-1) = -1;
-			asientos_lib += 1;
-			asientos_ocu -= 1;
-			return id_del_asiento;
-		}	
-	}else{
-		printf("Error, el asiento no puede exceder la capacidad de la sala");
-		return -1;
-	}
-	
-}
-
 int estado_asiento(int id_asiento){
-
+	if(!estado_sala()){
+		return -1;
+	}
 	//Si el asiento está fuera del rango de la sala (1--capacidad), da error
 	if (id_asiento <= capacidad_main && id_asiento > 0){
 		
@@ -160,6 +130,75 @@ int estado_asiento(int id_asiento){
 	
 }
 
+
+
+
+
+
+int reserva_asiento(int id_persona){
+	if(!estado_sala()){
+		return -1;
+	}
+	//Controlamos que hay asientos libres
+	if (asientos_libres()>0){
+	
+		//Control de que id es positivo
+		if(id_persona < 0){
+			
+			printf("Introduzca un id válido %d", id_persona);
+			return -1;
+		}
+			         	    	 
+	         	         
+	         //Recorremos los asientos y reservamos el primero que esté libre
+	         for (int i = 0; i < capacidad_main;i++){
+	              if (*(ptr+i) == -1) {
+	                  *(ptr+i) = id_persona;
+			  asientos_ocu++;
+			  //printf("\n reservando %d \n", asientos_ocu);	
+	                  return i+1;
+	              }
+	         }
+	         	         
+	}else{
+		printf("Error, no hay asientos libres");
+		return -1;
+	}
+}
+
+
+int libera_asiento(int id_asiento){
+	if(!estado_sala()){
+		return -1;
+	}
+	if(estado_asiento(id_asiento)>0){
+		int id_del_asiento = *(ptr+id_asiento-1);
+		*(ptr+id_asiento-1) = -1;
+		asientos_ocu -= 1;
+		return id_del_asiento;
+		
+	}else{
+		//Aqui añadir los dos errores, ya estaba libre o otro error 
+		return -1;
+	}
+	
+	
+
+}
+
+
+//Buscar asiento
+//
+
+
+
+/*
+Apuntes a tener en cuenta:
+1. id_persona se puede repetir y debe ser positivo entero 
+2. id_asiento es unico 
+
+
+*/
 
 
 
