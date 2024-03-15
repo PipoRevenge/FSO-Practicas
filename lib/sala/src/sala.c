@@ -1,8 +1,7 @@
 #include <stdio.h>  //para printf / fprintf
 #include <stdlib.h> //para exit
-#include <getopt.h> //para getopt
 #include <string.h> //para strlen
-#include <stdbool.h>
+
 
 /*Variables globales*/
 
@@ -12,31 +11,27 @@ int* ptr;
 int capacidad_main;
 //Asientos ocupados
 int asientos_ocu;
-//Asientos libres
-int asientos_lib;
+
 
 // Control de salida de errores
 void print_error(const char* msg){
 	//Cambiar esto para que salga por canal
 	//fprintf(stderr, "ERROR: %s\n", msg)
 }
-// Control de salida de advertencias
-#define print_warning(msg) fprintf(stderr, "ADVERTENCIA: %s\n", msg)
 
-//Funciones internas (No declarar en sala.h) 
-//Comentar sala.h
-bool estado_sala(){
+
+int existe_sala(){
 	if(ptr != NULL){
-		return true;
+		return 1;
 	}else {
-		return false;
+		return -1;
 	}
 }
 
 int crea_sala(int capacidad){
 	
 	//Comprobamos que la sala no exista
-	if(estado_sala()){
+	if(existe_sala()==1){
 		print_error("La sala ya ha sido creada.");
 		return -1;
 	}
@@ -69,10 +64,7 @@ int crea_sala(int capacidad){
 
 
 int elimina_sala(){
-	
-	//Si el puntero es NULL, no hay espacio de memoria que liberar
-	//Problema si se elimina dos veces peta //////////////////////////////////////////////////////////////////
-	if (!estado_sala()){
+	if (existe_sala()==-1){
 	     print_error("La sala no existe.");
 	     return -1;
 	}else{
@@ -85,7 +77,7 @@ int elimina_sala(){
 
 
 int capacidad_sala(){
-	if(!estado_sala()){
+	if(existe_sala()==-1){
 		print_error("La sala no ha sido creada.");
 		return -1;
 	}
@@ -93,7 +85,7 @@ int capacidad_sala(){
 }
 
 int asientos_libres(){
-	if(!estado_sala()){
+	if(existe_sala()==-1){
 		print_error("La sala no ha sido creada.");
 		return -1;
 	}
@@ -101,7 +93,7 @@ int asientos_libres(){
 }
 
 int asientos_ocupados(){
-	if(!estado_sala()){
+	if(existe_sala()==-1){
 		print_error("La sala no ha sido creada.");
 		return -1;
 	}
@@ -109,7 +101,7 @@ int asientos_ocupados(){
 }
 
 int estado_asiento(int id_asiento){
-	if(!estado_sala()){
+	if(existe_sala()==-1){
 		print_error("La sala no ha sido creada.");
 		return -1;
 	}
@@ -139,7 +131,7 @@ int estado_asiento(int id_asiento){
 }
 
 int reserva_asiento(int id_persona){
-	if(!estado_sala()){
+	if(existe_sala()==-1){
 		print_error("La sala no ha sido creada.");
 		return -1;
 	}
@@ -171,7 +163,7 @@ int reserva_asiento(int id_persona){
 
 
 int libera_asiento(int id_asiento){
-	if(!estado_sala()){
+	if(existe_sala()==-1){
 		print_error("La sala no ha sido creada.");
 		return -1;
 	}

@@ -66,7 +66,6 @@ Función: elimina_sala
 Escenarios:
 	Sala existente
 	Sala no existente
-	Liberación de memoria exitosa?
 */
 // Función para probar la función elimina_sala
 void test_elimina_sala() {
