@@ -1,4 +1,5 @@
 # FSO-Practicas
+
 ## Enlace al proyecto en github
 El código de esta librería se basa en el proyecto original disponible en [FSO-Practicas](https://github.com/PipoRevenge/FSO-Practicas).
 
@@ -156,4 +157,5 @@ La librería gestiona errores mediante la función `print_error(const char* msg)
 - Caso 2: Asiento ya libre
 - Caso 3: Asiento fuera del rango
 - Caso 4: Sala sin crear
+
 
