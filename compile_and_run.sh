@@ -10,7 +10,6 @@ gcc -c $LIB_DIR/sala/src/sala.c -o $LIB_DIR/sala/sala.o
 ar rcs $LIB_DIR/sala/libsala.a $LIB_DIR/sala/sala.o
 
 # Compilar el programa de prueba test.c vinculando la biblioteca estática
-#gcc $TEST_DIR/test.c -o $TEST_DIR/test -I$LIB_DIR/sala/include -L$LIB_DIR/sala -lsala
 gcc $TEST_DIR/test_sala.c -o $TEST_DIR/test_sala -I$LIB_DIR/sala/include -L$LIB_DIR/sala -lsala
 # Limpiar archivos intermedios
 rm $LIB_DIR/sala/sala.o

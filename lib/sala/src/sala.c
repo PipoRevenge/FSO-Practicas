@@ -15,8 +15,9 @@ int asientos_ocu;
 
 // Control de salida de errores
 void print_error(const char* msg){
-	//Cambiar esto para que salga por canal
-	//fprintf(stderr, "ERROR: %s\n", msg)
+
+	fprintf(stderr, "\nERROR CONTROLADO: %s\n", msg);
+	fflush(stdout);
 }
 
 

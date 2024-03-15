@@ -45,17 +45,8 @@ void test_crea_sala() {
 	resultado = crea_sala(capacidad);
 	DebeSerCierto(resultado == capacidad);
 	elimina_sala();
-
-	/*								Preguntar
-	printf("Caso 5 \n");
-	// Caso 5: Asignación de memoria fallida
-	capacidad = 1000000000;
-	resultado = crea_sala(capacidad);
-	if (resultado != -1) {
-		print_error("crea_sala no devolvió un error para una asignación de memoria fallida");
-	}
-	elimina_sala();
-	*/
+	
+	
 
 	FIN_TEST("crea_sala");
 	return;
