@@ -1,8 +1,10 @@
 #include <stdio.h>  //para printf / fprintf
 #include <stdlib.h> //para exit
 #include <string.h> //para strlen
+#include <unistd.h>
 
 
+#define MAX_INPUT_LENGTH 100
 /*Variables globales*/
 
 //Puntero de memoria
@@ -19,6 +21,7 @@ void print_error(const char* msg){
 	fprintf(stderr, "\nERROR CONTROLADO: %s\n", msg);
 	fflush(stdout);
 }
+
 
 
 int existe_sala(){
